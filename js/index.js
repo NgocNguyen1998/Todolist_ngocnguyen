@@ -40,6 +40,21 @@ const renderTask = (a, inner) => {
 
 const getElement = (id) => document.getElementById(id);
 
+function luuLocalStore (){
+    var mangTask = JSON.stringify(taskToDo.taskList)
+    localStorage.setItem('mangToDo',mangTask)
+}
+function laylocalStore (){
+    if(localStorage.getItem('mangToDo')){
+        var mangtodo = localStorage.getItem('mangToDo')
+        taskToDo.taskList = JSON.parse(mangtodo)
+        renderTask(taskToDo.taskList, 'todo')
+    }
+}
+
+window.onload = function (){
+    laylocalStore()
+}
 //add
 getElement('addItem').onclick = () => {
 
@@ -48,7 +63,8 @@ getElement('addItem').onclick = () => {
     taskToDo.addTask(task)
     console.log(taskToDo)
     renderTask(taskToDo.taskList, 'todo')
-
+    getElement('newTask').value = ""
+    luuLocalStore()
 }
 
 //checkTask
@@ -61,6 +77,7 @@ const checkTask = (name) => {
 
     taskToDo.checkTask(name)
     renderTask(taskToDo.taskList, 'todo')
+    luuLocalStore()
 }
 
 
@@ -68,6 +85,7 @@ const checkTask = (name) => {
 const remove = (name) => {
     taskToDo.removeTask(name)
     renderTask(taskToDo.taskList, 'todo')
+    luuLocalStore()
 }
 
 //Sort a-z
@@ -84,6 +102,7 @@ let arrSort =  taskToDo.taskList.sort((value2, value1)=> {
     return 1
 })
 renderTask(arrSort,'todo')
+
 }
 
 //sort z-a
