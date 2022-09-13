@@ -333,3 +333,8 @@ ul.todo#completed span{
   color: #25b99a
 }
 
+#err{
+  display: none;
+  color: red;
+  font-size: 13px;
+}

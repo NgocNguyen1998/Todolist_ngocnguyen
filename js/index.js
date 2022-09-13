@@ -14,7 +14,7 @@ class TaskToDo {
     checkTask(name) {
         this.taskList = this.taskList.filter(taskk => taskk.taskName !== name)
     }
-    
+
 }
 
 class Task {
@@ -40,19 +40,19 @@ const renderTask = (a, inner) => {
 
 const getElement = (id) => document.getElementById(id);
 
-function luuLocalStore (){
+function luuLocalStore() {
     var mangTask = JSON.stringify(taskToDo.taskList)
-    localStorage.setItem('mangToDo',mangTask)
+    localStorage.setItem('mangToDo', mangTask)
 }
-function laylocalStore (){
-    if(localStorage.getItem('mangToDo')){
+function laylocalStore() {
+    if (localStorage.getItem('mangToDo')) {
         var mangtodo = localStorage.getItem('mangToDo')
         taskToDo.taskList = JSON.parse(mangtodo)
         renderTask(taskToDo.taskList, 'todo')
     }
 }
 
-window.onload = function (){
+window.onload = function () {
     laylocalStore()
 }
 //add
@@ -62,6 +62,12 @@ getElement('addItem').onclick = () => {
     task.taskName = getElement('newTask').value;
     taskToDo.addTask(task)
     console.log(taskToDo)
+    let valid = true
+
+    valid = kiemTraRong(task.taskName, "#err", 'Task name')
+    if (!valid) {
+        return;
+    }
     renderTask(taskToDo.taskList, 'todo')
     getElement('newTask').value = ""
     luuLocalStore()
@@ -90,28 +96,28 @@ const remove = (name) => {
 
 //Sort a-z
 getElement('two').onclick = () => {
-let arrSort =  taskToDo.taskList.sort((value2, value1)=> {
-    let namevalue2 = value2.taskName.toLowerCase()
-    let namevalue1 = value1.taskName.toLocaleLowerCase()
-    if (namevalue2 > namevalue1) {
-        return 1 
-    }
-    if (namevalue2 < namevalue1) {
-        return -1
-    }
-    return 1
-})
-renderTask(arrSort,'todo')
+    let arrSort = taskToDo.taskList.sort((value2, value1) => {
+        let namevalue2 = value2.taskName.toLowerCase()
+        let namevalue1 = value1.taskName.toLocaleLowerCase()
+        if (namevalue2 > namevalue1) {
+            return 1
+        }
+        if (namevalue2 < namevalue1) {
+            return -1
+        }
+        return 1
+    })
+    renderTask(arrSort, 'todo')
 
 }
 
 //sort z-a
-getElement('three').onclick = ()=>{
-    let arrSort =  taskToDo.taskList.sort((value2, value1)=> {
+getElement('three').onclick = () => {
+    let arrSort = taskToDo.taskList.sort((value2, value1) => {
         let namevalue2 = value2.taskName.toLowerCase()
         let namevalue1 = value1.taskName.toLocaleLowerCase()
         if (namevalue2 > namevalue1) {
-            return -1 
+            return -1
         }
         if (namevalue2 < namevalue1) {
             return 1
@@ -119,6 +125,16 @@ getElement('three').onclick = ()=>{
         return -1
     })
     // arrSort.reverse()
-    renderTask(arrSort,'todo')
+    renderTask(arrSort, 'todo')
 }
 
+function kiemTraRong(value, selectorError, name) {
+
+    if (value.trim() !== "") {
+        document.querySelector(selectorError).innerHTML = "";
+        return true;
+    }
+    document.querySelector(selectorError).style.display = 'block'
+    document.querySelector(selectorError).innerHTML = name + " không được bỏ trống nhá!";
+    return false;
+}
